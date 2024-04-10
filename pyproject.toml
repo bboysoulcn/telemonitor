@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "serverstatus"
+version = "0.1.0"
+description = ""
+authors = ["bboysoul <bboysoulcn@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+psutil = "^5.9.8"
+python-telegram-bot = {extras = ["job-queue"], version = "^21.0.1"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  serverstatus:
+    image: serverstatus:latest
+    restart: always
+    container_name: serverstatus
+    environment:
+      - TG_CHAT_ID=your_chat_id
+      - TG_API_TOKEN=your_api_token
+      - CPU_PERCENT=80
+      - MEMORY_PERCENT=80
+      - DISK_PERCENT=80
+      - MONITOR_INTERVAL=300
+    network_mode: host
+    pid: host
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /:/host:ro

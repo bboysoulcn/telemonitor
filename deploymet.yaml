@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serverstatus
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: serverstatus
+  template:
+    metadata:
+      labels:
+        app: serverstatus
+    spec:
+      hostNetwork: true
+      hostPID: true
+      imagePullSecrets:
+        - name: regcred
+      containers:
+      - name: serverstatus
+        image: serverstatus:latest
+        env:
+        - name: TG_CHAT_ID
+          value: your_chat_id
+        - name: TG_API_TOKEN
+          value: your_api_token
+        - name: CPU_PERCENT
+          value: "80"
+        - name: MEMORY_PERCENT
+          value: "80"
+        - name: DISK_PERCENT
+          value: "80"
+        - name: MONITOR_INTERVAL
+          value: "300"
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+        - name: host
+          mountPath: /host
+      volumes:
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+      - name: host
+        hostPath:
+          path: /
