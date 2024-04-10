@@ -8,7 +8,7 @@ TeleMonitor 是一个使用 Python 编写的系统监控工具，它可以监控
 
 然后，你需要获取你希望接收警告的 Telegram chat ID。你可以使用 [@userinfobot](https://t.me/userinfobot) 来获取你的 chat ID。
 
-接下来clone这个项目：
+接下来 clone 这个项目：
 
 ```bash
 git clone https://github.com/bboysoulcn/telemonitor.git
