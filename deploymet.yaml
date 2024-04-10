@@ -15,11 +15,9 @@ spec:
     spec:
       hostNetwork: true
       hostPID: true
-      imagePullSecrets:
-        - name: regcred
       containers:
       - name: serverstatus
-        image: serverstatus:latest
+        image: ghcr.io/bboysoulcn/telemonitor:latest
         env:
         - name: TG_CHAT_ID
           value: your_chat_id
