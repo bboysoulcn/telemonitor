@@ -1,5 +1,6 @@
 import datetime
 import time
+import platform
 import psutil
 from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler, Application
@@ -61,15 +62,22 @@ def get_systeminfo():
     current_time = datetime.datetime.now()
     uptime = current_time - boot_time
     uptime = str(uptime).split('.')[0]  # Remove the microseconds
-    return cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, process_count, uptime
+
+    # Get system name and hostname
+    system_name = platform.platform()  # e.g., "Linux", "Windows", "macOS"
+    hostname = platform.node()  # e.g., "hostname.domain.com"
+
+    return cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, process_count, uptime, system_name, hostname
 
 
 async def reply_systeminfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Get the system information
-    cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, process_count, uptime = get_systeminfo()
+    cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, process_count, uptime, system_name, hostname = get_systeminfo()
     # Format the system information into a string
     system_info = f"""
 📊 **系统信息**\n
+🌍 *系统名称:* {system_name}
+📌 *主机名:* {hostname}
 🖥️ *CPU使用率:* {cpu_usage:.2f}%
 🧠 *内存使用率:* {memory_usage:.2f}%
 💽 *磁盘使用率:* {disk_usage:.2f}%
