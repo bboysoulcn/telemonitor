@@ -14,7 +14,7 @@ async def monitor_cpu_usage(context: ContextTypes.DEFAULT_TYPE):
         # 使用中文发送并且美化发送格式而且要添加emoji
         await context.bot.send_message(chat_id=context.job.chat_id,
                                        text=f"⚠️ *警告*: CPU 使用率已经达到 *{cpu_usage}%*! 阈值设置为 *{cpu_percent}%*.",
-                                       parse_mode="Markdown")
+                                       parse_mode="MarkdownV2")
 
 
 async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
@@ -24,7 +24,7 @@ async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
     if memory_usage >= memory_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
                                        text=f"⚠️ *警告*: 内存使用率已经达到 *{memory_usage}%*! 阈值设置为 *{memory_percent}%*.",
-                                       parse_mode="Markdown")
+                                       parse_mode="MarkdownV2")
 
 
 async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
@@ -34,7 +34,7 @@ async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
     if disk_usage >= disk_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
                                        text=f"⚠️ *警告*: 磁盘使用率已经达到 *{disk_usage}%*! 阈值设置为 *{disk_percent}%*.",
-                                       parse_mode="Markdown")
+                                       parse_mode="MarkdownV2")
 
 
 def get_systeminfo():
@@ -88,18 +88,18 @@ async def reply_systeminfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     📥 已接收: {bytes_recv:.2f} GB
             """
     # Send the system information to the user
-    await update.message.reply_text(system_info, parse_mode="Markdown")
+    await update.message.reply_text(system_info, parse_mode="MarkdownV2")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends explanation on how to use the bot."""
-    await update.message.reply_text("👋 使用 `/status` 来获取系统信息", parse_mode="Markdown")
+    await update.message.reply_text("👋 使用 `/status` 来获取系统信息", parse_mode="MarkdownV2")
 
 
 async def start_boot(context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=context.job.chat_id, text="🚀 *原神启动中...*", parse_mode="Markdown")
+    await context.bot.send_message(chat_id=context.job.chat_id, text="🚀 *原神启动中...*", parse_mode="MarkdownV2")
     time.sleep(1)
-    await context.bot.send_message(chat_id=context.job.chat_id, text="🎮 *原神启动完成！*", parse_mode="Markdown")
+    await context.bot.send_message(chat_id=context.job.chat_id, text="🎮 *原神启动完成！*", parse_mode="MarkdownV2")
 
 
 def main() -> None:
