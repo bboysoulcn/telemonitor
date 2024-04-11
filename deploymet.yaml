@@ -18,6 +18,7 @@ spec:
       containers:
       - name: serverstatus
         image: ghcr.io/bboysoulcn/telemonitor:latest
+        pullPolicy: Always
         env:
         - name: TG_CHAT_ID
           value: your_chat_id

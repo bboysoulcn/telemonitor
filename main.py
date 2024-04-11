@@ -14,9 +14,7 @@ async def monitor_cpu_usage(context: ContextTypes.DEFAULT_TYPE):
     if cpu_usage >= cpu_percent:
         # 使用中文发送并且美化发送格式而且要添加emoji
         await context.bot.send_message(chat_id=context.job.chat_id,
-                                       text=escape_markdown(
-                                           f"⚠️ *警告*: CPU 使用率已经达到 *{cpu_usage}%*! 阈值设置为 *{cpu_percent}%*.",
-                                           version=2),
+                                       text=f"⚠️ *警告*: CPU 使用率已经达到 *{cpu_usage}%*\! 阈值设置为 *{cpu_percent}%*\.",
                                        parse_mode="MarkdownV2")
 
 
@@ -26,9 +24,7 @@ async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
     memory_usage = int(memory_info.percent)
     if memory_usage >= memory_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
-                                       text=escape_markdown(
-                                           f"⚠️ *警告*: 内存使用率已经达到 *{memory_usage}%*! 阈值设置为 *{memory_percent}%*.",
-                                           version=2),
+                                       text=f"⚠️ *警告*: 内存使用率已经达到 *{memory_usage}%*\! 阈值设置为 *{memory_percent}%*\.",
                                        parse_mode="MarkdownV2")
 
 
@@ -38,9 +34,7 @@ async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
     disk_usage = int(disk_info.percent)
     if disk_usage >= disk_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
-                                       text=escape_markdown(
-                                           f"⚠️ *警告*: 磁盘使用率已经达到 *{disk_usage}%*! 阈值设置为 *{disk_percent}%*.",
-                                           version=2),
+                                       text=f"⚠️ *警告*: 磁盘使用率已经达到 *{disk_usage}%*\! 阈值设置为 *{disk_percent}%*\.",
                                        parse_mode="MarkdownV2")
 
 
@@ -80,35 +74,37 @@ def get_systeminfo():
 async def reply_systeminfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Get the system information
     cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, process_count, uptime, system_name, hostname = get_systeminfo()
+    system_name = escape_markdown(system_name,version=2)
+    hostname = escape_markdown(hostname,version=2)
     # Format the system information into a string
     system_info = f"""
 📊 **系统信息**\n
 🌍 *系统名称:* {system_name}
 📌 *主机名:* {hostname}
-🖥️ *CPU使用率:* {cpu_usage:.2f}%
-🧠 *内存使用率:* {memory_usage:.2f}%
-💽 *磁盘使用率:* {disk_usage:.2f}%
+🖥️ *CPU使用率:* {int(cpu_usage)}%
+🧠 *内存使用率:* {int(memory_usage)}%
+💽 *磁盘使用率:* {int(disk_usage)}%
 👾 *进程数量:* {process_count}
 🕰️ *开机时间:* {uptime}
 🌐 *网络信息:*
-    📤 已发送: {bytes_sent:.2f} GB
-    📥 已接收: {bytes_recv:.2f} GB
+    📤 已发送: {int(bytes_sent)} GB
+    📥 已接收: {int(bytes_recv)} GB
             """
     # Send the system information to the user
-    await update.message.reply_text(escape_markdown(system_info, version=2), parse_mode="MarkdownV2")
+    await update.message.reply_text(system_info, parse_mode="MarkdownV2")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends explanation on how to use the bot."""
-    await update.message.reply_text(escape_markdown("👋 使用 `/status` 来获取系统信息", version=2),
+    await update.message.reply_text("👋 使用 `/status` 来获取系统信息",
                                     parse_mode="MarkdownV2")
 
 
 async def start_boot(context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=context.job.chat_id, text=escape_markdown("🚀 *原神启动中...*", version=2),
+    await context.bot.send_message(chat_id=context.job.chat_id, text="🚀 *原神启动中\.\.\.*",
                                    parse_mode="MarkdownV2")
     time.sleep(1)
-    await context.bot.send_message(chat_id=context.job.chat_id, text=escape_markdown("🎮 *原神启动完成！*", version=2),
+    await context.bot.send_message(chat_id=context.job.chat_id, text="🎮 *原神启动完成\!*",
                                    parse_mode="MarkdownV2")
 
 
