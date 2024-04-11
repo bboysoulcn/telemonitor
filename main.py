@@ -4,6 +4,7 @@ import platform
 import psutil
 from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler, Application
+from telegram.helpers import escape_markdown
 import os
 
 
@@ -13,7 +14,9 @@ async def monitor_cpu_usage(context: ContextTypes.DEFAULT_TYPE):
     if cpu_usage >= cpu_percent:
         # 使用中文发送并且美化发送格式而且要添加emoji
         await context.bot.send_message(chat_id=context.job.chat_id,
-                                       text=f"⚠️ *警告*: CPU 使用率已经达到 *{cpu_usage}%*! 阈值设置为 *{cpu_percent}%*.",
+                                       text=escape_markdown(
+                                           f"⚠️ *警告*: CPU 使用率已经达到 *{cpu_usage}%*! 阈值设置为 *{cpu_percent}%*.",
+                                           version=2),
                                        parse_mode="MarkdownV2")
 
 
@@ -23,7 +26,9 @@ async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
     memory_usage = int(memory_info.percent)
     if memory_usage >= memory_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
-                                       text=f"⚠️ *警告*: 内存使用率已经达到 *{memory_usage}%*! 阈值设置为 *{memory_percent}%*.",
+                                       text=escape_markdown(
+                                           f"⚠️ *警告*: 内存使用率已经达到 *{memory_usage}%*! 阈值设置为 *{memory_percent}%*.",
+                                           version=2),
                                        parse_mode="MarkdownV2")
 
 
@@ -33,7 +38,9 @@ async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
     disk_usage = int(disk_info.percent)
     if disk_usage >= disk_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
-                                       text=f"⚠️ *警告*: 磁盘使用率已经达到 *{disk_usage}%*! 阈值设置为 *{disk_percent}%*.",
+                                       text=escape_markdown(
+                                           f"⚠️ *警告*: 磁盘使用率已经达到 *{disk_usage}%*! 阈值设置为 *{disk_percent}%*.",
+                                           version=2),
                                        parse_mode="MarkdownV2")
 
 
@@ -88,18 +95,21 @@ async def reply_systeminfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     📥 已接收: {bytes_recv:.2f} GB
             """
     # Send the system information to the user
-    await update.message.reply_text(system_info, parse_mode="MarkdownV2")
+    await update.message.reply_text(escape_markdown(system_info, version=2), parse_mode="MarkdownV2")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends explanation on how to use the bot."""
-    await update.message.reply_text("👋 使用 `/status` 来获取系统信息", parse_mode="MarkdownV2")
+    await update.message.reply_text(escape_markdown("👋 使用 `/status` 来获取系统信息", version=2),
+                                    parse_mode="MarkdownV2")
 
 
 async def start_boot(context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=context.job.chat_id, text="🚀 *原神启动中...*", parse_mode="MarkdownV2")
+    await context.bot.send_message(chat_id=context.job.chat_id, text=escape_markdown("🚀 *原神启动中...*", version=2),
+                                   parse_mode="MarkdownV2")
     time.sleep(1)
-    await context.bot.send_message(chat_id=context.job.chat_id, text="🎮 *原神启动完成！*", parse_mode="MarkdownV2")
+    await context.bot.send_message(chat_id=context.job.chat_id, text=escape_markdown("🎮 *原神启动完成！*", version=2),
+                                   parse_mode="MarkdownV2")
 
 
 def main() -> None:
