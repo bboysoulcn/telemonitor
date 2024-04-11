@@ -47,6 +47,10 @@ kubectl apply -f deployment.yaml
 ![](./images/img1.webp)
 ![](./images/img2.webp)
 
+## 贡献者
+
+- [SimonGino](https://github.com/SimonGino)
+
 ## 许可证
 
 这个项目使用 MIT 许可证，详情请见 [LICENSE](LICENSE) 文件。
