@@ -11,7 +11,7 @@ services:
       - MEMORY_PERCENT=80
       - DISK_PERCENT=80
       - MONITOR_INTERVAL=300
-      - TG_API_BASE_URL=https://api.telegram.org
+      - TG_API_BASE_URL=https://api.telegram.org/bot
       - DISK_PATH=/host
     network_mode: host
     pid: host

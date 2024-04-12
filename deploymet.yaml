@@ -33,7 +33,7 @@ spec:
         - name: MONITOR_INTERVAL
           value: "300"
         - name: TG_API_BASE_URL
-          value: "https://api.telegram.org"
+          value: "https://api.telegram.org/bot"
         - name: DISK_PATH
           value: "/host"
         volumeMounts:
