@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: serverstatus
+  name: telemonitor
   namespace: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: serverstatus
+      app: telemonitor
   template:
     metadata:
       labels:
-        app: serverstatus
+        app: telemonitor
     spec:
       hostNetwork: true
       hostPID: true
       containers:
-      - name: serverstatus
+      - name: telemonitor
         image: ghcr.io/bboysoulcn/telemonitor:latest
-        pullPolicy: Always
+        imagePullPolicy: Always
         env:
         - name: TG_CHAT_ID
           value: your_chat_id
@@ -32,6 +32,10 @@ spec:
           value: "80"
         - name: MONITOR_INTERVAL
           value: "300"
+        - name: TG_API_BASE_URL
+          value: "https://api.telegram.org"
+        - name: DISK_PATH
+          value: "/host"
         volumeMounts:
         - name: localtime
           mountPath: /etc/localtime

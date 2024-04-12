@@ -1,9 +1,9 @@
 version: '3'
 services:
-  serverstatus:
+  telemonitor:
     image: ghcr.io/bboysoulcn/telemonitor:latest
     restart: always
-    container_name: serverstatus
+    container_name: telemonitor
     environment:
       - TG_CHAT_ID=your_chat_id
       - TG_API_TOKEN=your_api_token
@@ -11,6 +11,8 @@ services:
       - MEMORY_PERCENT=80
       - DISK_PERCENT=80
       - MONITOR_INTERVAL=300
+      - TG_API_BASE_URL=https://api.telegram.org
+      - DISK_PATH=/host
     network_mode: host
     pid: host
     volumes:

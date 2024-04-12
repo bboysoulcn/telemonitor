@@ -21,26 +21,33 @@ docker-compose up -d
 ```
 
 或者你可以使用 k8s 来运行 Telemonitor：
-    
+
 ```bash
 kubectl apply -f deployment.yaml
 ```
-
 
 下面是 Telemonitor 的环境变量：
 
 - `TG_API_TOKEN`: 你的 Telegram bot 的 API token。
 - `TG_CHAT_ID`: 你希望接收警告的 Telegram chat ID。
-- `CPU_PERCENT`: CPU 使用率的阈值，超过这个阈值时，Telemonitor 会发送警告。
-- `MEMORY_PERCENT`: 内存使用率的阈值，超过这个阈值时，Telemonitor 会发送警告。
-- `DISK_PERCENT`: 磁盘使用率的阈值，超过这个阈值时，Telemonitor 会发送警告。
-- `MONITOR_INTERVAL`: 监控的间隔时间（秒）。
+- `TG_API_BASE_URL`: Telegram API 的基础 URL，默认值为 `https://api.telegram.org`.
+- `CPU_PERCENT`: CPU 使用率的阈值，超过这个阈值时，Telemonitor 会发送警告，默认值为 80。
+- `MEMORY_PERCENT`: 内存使用率的阈值，超过这个阈值时，Telemonitor 会发送警告，默认值为 80。
+- `DISK_PERCENT`: 磁盘使用率的阈值，超过这个阈值时，Telemonitor 会发送警告，默认值为 80。
+- `MONITOR_INTERVAL`: 监控的间隔时间（秒），默认值为 60。
+- `DISK_PATH`: 磁盘的路径，默认值为 `/host`。
 
 下面是机器人的命令：
 
 - /start - 获取帮助
 - /help - 获取帮助
 - /status - 获取系统状态
+
+### 如果你不能访问Telegram API
+
+你可以使用下面项目创建一个 api 代理，并且修改环境变量 TG_API_BASE_URL
+
+[teleproxy](https://github.com/bboysoulcn/teleproxy)
 
 ### 效果展示
 

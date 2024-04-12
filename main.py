@@ -29,7 +29,7 @@ async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
-    disk_path = os.environ['DISK_PATH']
+    disk_path = os.environ.get('DISK_PATH', '/host')
     disk_percent = int(context.job.data)
     disk_info = psutil.disk_usage(disk_path)
     disk_usage = int(disk_info.percent)
@@ -40,7 +40,7 @@ async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
 
 
 def get_systeminfo():
-    disk_path = os.environ['DISK_PATH']
+    disk_path = os.environ.get('DISK_PATH', '/host')
     # Get CPU usage
     cpu_usage = psutil.cpu_percent(interval=1)
 
