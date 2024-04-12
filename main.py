@@ -29,8 +29,9 @@ async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
+    disk_path = os.environ['DISK_PATH']
     disk_percent = int(context.job.data)
-    disk_info = psutil.disk_usage('/host')
+    disk_info = psutil.disk_usage(disk_path)
     disk_usage = int(disk_info.percent)
     if disk_usage >= disk_percent:
         await context.bot.send_message(chat_id=context.job.chat_id,
@@ -39,6 +40,7 @@ async def monitor_disk_usage(context: ContextTypes.DEFAULT_TYPE):
 
 
 def get_systeminfo():
+    disk_path = os.environ['DISK_PATH']
     # Get CPU usage
     cpu_usage = psutil.cpu_percent(interval=1)
 
@@ -47,7 +49,7 @@ def get_systeminfo():
     memory_usage = memory_info.percent
 
     # Get disk usage
-    disk_info = psutil.disk_usage('/')
+    disk_info = psutil.disk_usage(disk_path)
     disk_usage = disk_info.percent
 
     # Get network info
@@ -74,8 +76,8 @@ def get_systeminfo():
 async def reply_systeminfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Get the system information
     cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, process_count, uptime, system_name, hostname = get_systeminfo()
-    system_name = escape_markdown(system_name,version=2)
-    hostname = escape_markdown(hostname,version=2)
+    system_name = escape_markdown(system_name, version=2)
+    hostname = escape_markdown(hostname, version=2)
     # Format the system information into a string
     system_info = f"""
 📊 **系统信息**\n
@@ -111,13 +113,15 @@ async def start_boot(context: ContextTypes.DEFAULT_TYPE):
 def main() -> None:
     tg_api_token = os.environ['TG_API_TOKEN']
     tg_chat_id = os.environ['TG_CHAT_ID']
-    cpu_percent = os.environ['CPU_PERCENT']
-    memory_percent = os.environ['MEMORY_PERCENT']
-    disk_percent = os.environ['DISK_PERCENT']
-    monitor_interval = int(os.environ['MONITOR_INTERVAL'])
+    cpu_percent = os.environ.get('CPU_PERCENT', '80')
+    memory_percent = os.environ.get('MEMORY_PERCENT', '80')
+    disk_percent = os.environ.get('DISK_PERCENT', '80')
+    monitor_interval = int(os.environ.get('MONITOR_INTERVAL', '60'))
+    tg_api_base_url = os.environ.get('TG_API_BASE_URL', 'https://api.telegram.org/bot')
     """Run bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token(tg_api_token).build()
+    application = Application.builder().connect_timeout(30).read_timeout(30).base_url(
+        base_url=tg_api_base_url).token(tg_api_token).build()
     job_queue = application.job_queue
     job_queue.run_repeating(monitor_cpu_usage, interval=monitor_interval, first=10, chat_id=tg_chat_id,
                             data=cpu_percent)
