@@ -58,6 +58,10 @@ kubectl apply -f deployment.yaml
 
 - [SimonGino](https://github.com/SimonGino)
 
+## 广告位
+
+我的tg频道 [https://t.me/bboyapp](https://t.me/bboyapp)
+
 ## 许可证
 
 这个项目使用 MIT 许可证，详情请见 [LICENSE](LICENSE) 文件。
