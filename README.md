@@ -36,6 +36,7 @@ kubectl apply -f deployment.yaml
 - `DISK_PERCENT`: 磁盘使用率的阈值，超过这个阈值时，Telemonitor 会发送警告，默认值为 80。
 - `MONITOR_INTERVAL`: 监控的间隔时间（秒），默认值为 60。
 - `DISK_PATH`: 磁盘的路径，默认值为 `/host`。
+- `URL_LIST`: 需要监控的 URL 列表，用逗号分隔，默认值为空。
 
 下面是机器人的命令：
 

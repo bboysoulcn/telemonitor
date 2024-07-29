@@ -6,6 +6,7 @@ from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler, Application
 from telegram.helpers import escape_markdown
 import os
+import httpx
 
 
 async def monitor_cpu_usage(context: ContextTypes.DEFAULT_TYPE):
@@ -16,6 +17,23 @@ async def monitor_cpu_usage(context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=context.job.chat_id,
                                        text=f"⚠️ *警告*: CPU 使用率已经达到 *{cpu_usage}%*\! 阈值设置为 *{cpu_percent}%*\.",
                                        parse_mode="MarkdownV2")
+
+
+async def monitor_url(context: ContextTypes.DEFAULT_TYPE):
+    url_list = context.job.data.split(',')
+    for url in url_list:
+        try:
+            response = httpx.get(url)
+            url = escape_markdown(url, version=2)
+            print(f"URL: {url}, Status Code: {response.status_code}")
+            if response.status_code != 200:
+                await context.bot.send_message(chat_id=context.job.chat_id,
+                                               text=f"⚠️ *警告*: {url} 状态码为 *{response.status_code}*",
+                                               parse_mode="MarkdownV2", disable_web_page_preview=True)
+        except Exception as e:
+            await context.bot.send_message(chat_id=context.job.chat_id,
+                                           text=f"⚠️ *警告*: {url} 访问失败",
+                                           parse_mode="MarkdownV2",disable_web_page_preview=True)
 
 
 async def monitor_memory_usage(context: ContextTypes.DEFAULT_TYPE):
@@ -118,6 +136,7 @@ def main() -> None:
     disk_percent = os.environ.get('DISK_PERCENT', '80')
     monitor_interval = int(os.environ.get('MONITOR_INTERVAL', '60'))
     tg_api_base_url = os.environ.get('TG_API_BASE_URL', 'https://api.telegram.org/bot')
+    url_list = os.environ.get('URL_LIST', 'https://www.baidu.com')
     """Run bot."""
     # Create the Application and pass it your bot's token.
     application = Application.builder().connect_timeout(30).read_timeout(30).base_url(
@@ -129,6 +148,7 @@ def main() -> None:
                             data=memory_percent)
     job_queue.run_repeating(monitor_memory_usage, interval=monitor_interval, first=10, chat_id=tg_chat_id,
                             data=disk_percent)
+    job_queue.run_repeating(monitor_url, interval=monitor_interval, first=10, chat_id=tg_chat_id, data=url_list)
     job_queue.run_once(start_boot, chat_id=tg_chat_id, when=2)
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler(["start", "help"], start))
