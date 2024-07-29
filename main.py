@@ -25,7 +25,6 @@ async def monitor_url(context: ContextTypes.DEFAULT_TYPE):
         try:
             response = httpx.get(url)
             url = escape_markdown(url, version=2)
-            print(f"URL: {url}, Status Code: {response.status_code}")
             if response.status_code != 200:
                 await context.bot.send_message(chat_id=context.job.chat_id,
                                                text=f"⚠️ *警告*: {url} 状态码为 *{response.status_code}*",
