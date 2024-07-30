@@ -14,6 +14,7 @@ services:
       - TG_API_BASE_URL=https://api.telegram.org/bot
       - DISK_PATH=/host
       - URL_LIST=https://www.baidu.com,https://www.google.com,https://www.bing.com
+      - LANGUAGE=cn
     network_mode: host
     pid: host
     volumes:

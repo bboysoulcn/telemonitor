@@ -38,6 +38,8 @@ spec:
           value: "/host"
         - name: URL_LIST
           value: "https://www.baidu.com,https://www.google.com,https://www.bing.com"
+        - name: LANGUAGE
+          value: "cn"
         volumeMounts:
         - name: localtime
           mountPath: /etc/localtime
